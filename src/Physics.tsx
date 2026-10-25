@@ -15,11 +15,8 @@ export default function Physics() {
   }
   return (
     <section className="page">
-      <div className="eyebrow">THE ENGINEERING / EXPLAINED</div>
       <h1>
-        A little geometry.
-        <br />
-        <em>A lot to understand.</em>
+        A little geometry, a lot to understand.
       </h1>
       <p className="lead">
         Explore how radius, banking and a side-friction assumption interact.
@@ -82,7 +79,7 @@ export default function Physics() {
           </p>
         </div>
         <div className="physics-result">
-          <span className="eyebrow">HYPOTHETICAL SCENARIO</span>
+          <span className="eyebrow">Hypothetical scenario</span>
           <div className="formula">V = √15R(e + f)</div>
           {result !== null ? (
             <>

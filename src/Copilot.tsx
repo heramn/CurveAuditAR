@@ -244,13 +244,12 @@ export default function Copilot({
     <section className="page copilot-page">
       <div className="page-heading">
         <div>
-          <div className="eyebrow">POCKET CO-PILOT</div>
           <h1>Hear the road ahead.</h1>
           <p className="lead">
             A stationary demonstration on real Ozark road geometry.
           </p>
         </div>
-        <span className="mode-badge">SIMULATION / NO GPS REQUIRED</span>
+        <span className="mode-badge">Simulation, no GPS required</span>
       </div>
       <div className="copilot-grid">
         <div className="copilot-console">

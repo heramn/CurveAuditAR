@@ -33,23 +33,23 @@ export default function Report({
         </button>
       </div>
       <article className="report">
-        <div className="eyebrow">CURVEAUDIT AR / FIELD REVIEW SERIES</div>
+        <div className="eyebrow">CurveAudit AR field review series</div>
         <h1>Preliminary curve audit</h1>
         <p className="report-sub">
           {p.name} · {p.county} County, Arkansas
         </p>
         <div className="report-meta">
-          <span>REPORT {p.id}</span>
+          <span>Report {p.id}</span>
           <span>
             {new Date().toLocaleDateString("en-US", {
               timeZone: "America/Chicago",
             })}
           </span>
-          <span>NOT FIELD REVIEWED</span>
+          <span>Not field reviewed</span>
         </div>
         <div className="report-grid">
           <div>
-            <h2>01 / Geometry screening</h2>
+            <h2>Geometry screening</h2>
             <dl>
               <dt>Estimated radius</dt>
               <dd>
@@ -77,23 +77,23 @@ export default function Report({
               role="img"
               aria-label="Selected candidate centerline geometry"
             >
-              <rect width="310" height="310" fill="#f1f3ed" />
-              <path d="M20 20V290H290" fill="none" stroke="#ccd4c8" />
+              <rect width="310" height="310" fill="#eef1f2" />
+              <path d="M20 20V290H290" fill="none" stroke="#c3ccd3" />
               <polyline
                 points={points}
                 fill="none"
-                stroke="#1d5144"
+                stroke="#13263a"
                 strokeWidth="8"
                 strokeLinecap="round"
               />
-              <text x="280" y="25" fill="#526557">
+              <text x="280" y="25" fill="#566676">
                 N ↑
               </text>
             </svg>
             <figcaption>Centerline shape · north up · not a survey</figcaption>
           </figure>
         </div>
-        <h2>02 / Evidence and missing measurements</h2>
+        <h2>Evidence and missing measurements</h2>
         <p>{p.rationale}</p>
         <p>
           Quality: {p.quality}. Local sampled radii span{" "}
@@ -105,7 +105,7 @@ export default function Report({
           Banking, friction, grade, sign inventory, sight distance, and traffic
           exposure are unknown. {p.crashContext}. Elevation: {p.elevation}.
         </p>
-        <h2>03 / Professional field-review checklist</h2>
+        <h2>Professional field-review checklist</h2>
         <ul>
           <li>
             Verify alignment, radius and available sight distance with suitable
@@ -129,7 +129,7 @@ export default function Report({
             treatment only where field evidence supports them.
           </li>
         </ul>
-        <h2>04 / Reproducibility and references</h2>
+        <h2>Reproducibility and references</h2>
         <p>
           OSM way{" "}
           <a href={`https://www.openstreetmap.org/way/${p.osmId}`}>{p.osmId}</a>{" "}
@@ -151,7 +151,7 @@ export default function Report({
           </a>
         </p>
         <footer>
-          PRELIMINARY SCREENING ONLY. This report is not an engineering study, a
+          Preliminary screening only. This report is not an engineering study, a
           finding that a road is unsafe, a certified advisory speed, or a
           determination that a treatment is required. © OpenStreetMap
           contributors, ODbL. County boundaries: U.S. Census Bureau.

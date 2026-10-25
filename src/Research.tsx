@@ -48,11 +48,8 @@ export default function Research({
   if (view === "sources")
     return (
       <section className="page research-page">
-        <div className="eyebrow">EVIDENCE YOU CAN INSPECT</div>
         <h1>
-          Open data.
-          <br />
-          <em>Nothing invented.</em>
+          Open data, nothing invented.
         </h1>
         <p className="lead">
           An honest ledger of what powers the application, what we verified, and
@@ -128,11 +125,8 @@ export default function Research({
   if (view === "methodology")
     return (
       <section className="page research-page">
-        <div className="eyebrow">UNDER THE HOOD / METHOD V1.0.0</div>
         <h1>
-          From a line on a map
-          <br />
-          <em>to a question worth asking.</em>
+          From a line on a map to a question worth asking.
         </h1>
         <p className="lead">
           Reproducible geometric screening, with the uncertainty kept in view.
@@ -197,11 +191,8 @@ export default function Research({
   const max = Math.max(...stats.pilots.map((p) => p.candidates));
   return (
     <section className="page research-page">
-      <div className="eyebrow">LOCAL IMPACT / NORTHWEST ARKANSAS</div>
       <h1>
-        Small communities.
-        <br />
-        <em>Connected by winding roads.</em>
+        Small communities, connected by winding roads.
       </h1>
       <p className="lead">
         A practical inventory for four pilot areas, built to complement the
@@ -209,7 +200,6 @@ export default function Research({
       </p>
       <div className="impact-grid">
         <article className="panel">
-          <span className="eyebrow">OUR ACTUAL DATASET</span>
           <h2>{stats.analyzedKm.toLocaleString()} km of analyzed centerline</h2>
           <p>
             Complete ways intersecting four boxes can extend beyond the boxes.
@@ -241,7 +231,6 @@ export default function Research({
           </p>
         </article>
         <article className="impact-story">
-          <span className="eyebrow">BUILDING ON LOCAL WORK</span>
           <h2>
             A new layer for
             <br />a shared mission.
@@ -274,9 +263,7 @@ export default function Research({
       </div>
       {regional && (
         <article className="panel regional-evidence">
-          <span className="eyebrow">
-            PUBLISHED REGIONAL CONTEXT / 2017–2021
-          </span>
+          <span className="eyebrow">Published regional context, 2017–2021</span>
           <h2>Rural crashes had a larger serious-outcome share.</h2>
           <p>
             NWARPC’s historical study reports fatal or serious injury (KA)
