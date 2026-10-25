@@ -1,4 +1,51 @@
-import test from 'node:test';import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';
-const data=JSON.parse(await readFile('public/data/curves.json','utf8')),stats=JSON.parse(await readFile('public/data/stats.json','utf8'));
-test('real candidate dataset has unique preserved OSM identities and plausible local geometry',()=>{assert.ok(data.features.length>50);const ids=new Set();for(const f of data.features){const p=f.properties;assert.ok(Number.isInteger(p.osmId)&&p.osmId>0);assert.ok(!ids.has(p.id));ids.add(p.id);assert.ok(p.radiusM>=25&&p.radiusM<=650);assert.ok(p.headingDeg>=18);assert.ok(p.lengthM>=60);assert.ok(f.geometry.coordinates.length>=3);for(const [x,y]of f.geometry.coordinates){assert.ok(x>-95&&x<-92);assert.ok(y>35&&y<37);}assert.equal(p.postedSpeed,null);assert.equal(p.banking,null);assert.equal(p.friction,null);}});
-test('dashboard metrics reconcile to candidate records',()=>{assert.equal(stats.candidates,data.features.length);assert.equal(stats.counties.length,new Set(data.features.map(f=>f.properties.county)).size);assert.equal(stats.pilots.reduce((n,p)=>n+p.candidates,0),data.features.length);assert.equal(stats.verifiedSpeeds,0);});
+import test from "node:test";
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import regional from "../public/data/regional-context.json" with { type: "json" };
+const data = JSON.parse(await readFile("public/data/curves.json", "utf8")),
+  stats = JSON.parse(await readFile("public/data/stats.json", "utf8"));
+test("published rural and urban crash outcomes reproduce Table 18 proportions", () => {
+  assert.equal(
+    regional.rows[0].reportedCrashes + regional.rows[1].reportedCrashes,
+    58896,
+  );
+  assert.equal(
+    regional.rows.reduce((n, r) => n + r.fatalOrSeriousInjuryCrashes, 0),
+    1369,
+  );
+  assert.equal(((100 * 785) / 45806).toFixed(2), "1.71");
+  assert.equal(((100 * 584) / 13090).toFixed(2), "4.46");
+});
+test("real candidate dataset has unique preserved OSM identities and plausible local geometry", () => {
+  assert.ok(data.features.length > 50);
+  const ids = new Set();
+  for (const f of data.features) {
+    const p = f.properties;
+    assert.ok(Number.isInteger(p.osmId) && p.osmId > 0);
+    assert.ok(!ids.has(p.id));
+    ids.add(p.id);
+    assert.ok(p.radiusM >= 25 && p.radiusM <= 650);
+    assert.ok(p.headingDeg >= 18);
+    assert.ok(p.lengthM >= 60);
+    assert.ok(f.geometry.coordinates.length >= 3);
+    for (const [x, y] of f.geometry.coordinates) {
+      assert.ok(x > -95 && x < -92);
+      assert.ok(y > 35 && y < 37);
+    }
+    assert.equal(p.postedSpeed, null);
+    assert.equal(p.banking, null);
+    assert.equal(p.friction, null);
+  }
+});
+test("dashboard metrics reconcile to candidate records", () => {
+  assert.equal(stats.candidates, data.features.length);
+  assert.equal(
+    stats.counties.length,
+    new Set(data.features.map((f) => f.properties.county)).size,
+  );
+  assert.equal(
+    stats.pilots.reduce((n, p) => n + p.candidates, 0),
+    data.features.length,
+  );
+  assert.equal(stats.verifiedSpeeds, 0);
+});

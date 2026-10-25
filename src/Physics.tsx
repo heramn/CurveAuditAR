@@ -1,6 +1,121 @@
-import {useState} from 'react';
-import {ArrowUpRight,FlaskConical} from 'lucide-react';
-import {scenarioSpeed} from './engineering.mjs';
-export default function Physics(){const [radius,setRadius]=useState('150'),[unit,setUnit]=useState('m'),[bank,setBank]=useState('0.04'),[friction,setFriction]=useState('0.12');let result:number|null=null,error='';try{result=scenarioSpeed(radius,unit,bank,friction);}catch(e){error=(e as Error).message;}
-return <section className="page"><div className="eyebrow">THE ENGINEERING / EXPLAINED</div><h1>A little geometry.<br/><em>A lot to understand.</em></h1><p className="lead">Explore how radius, banking and a side-friction assumption interact. Every value here is a hypothetical input.</p><div className="physics-grid"><div className="panel form-panel"><div className="panel-title"><FlaskConical size={20}/><h2>Build a scenario</h2></div><label>Horizontal radius<div className="input-row"><input type="number" min="1" value={radius} onChange={e=>setRadius(e.target.value)}/><select aria-label="Radius unit" value={unit} onChange={e=>setUnit(e.target.value)}><option value="m">meters</option><option value="ft">feet</option></select></div></label><label>Superelevation, e <small>Assumed banking as a decimal; 0.04 = 4%</small><input type="number" min="0" max="0.12" step="0.01" value={bank} onChange={e=>setBank(e.target.value)}/></label><label>Side-friction factor, f <small>Educational assumption; not measured pavement friction</small><input type="number" min="0" max="0.4" step="0.01" value={friction} onChange={e=>setFriction(e.target.value)}/></label><p className="muted">Inputs are intentionally bounded to nonnegative educational scenarios. Adverse cross-slope is outside this explorer.</p></div><div className="physics-result"><span className="eyebrow">HYPOTHETICAL SCENARIO</span><div className="formula">V = √15R(e + f)</div>{result!==null?<><div className="result-number">{result.toFixed(1)}<span>mph</span></div><p>Theoretical relationship output</p></>:<p role="alert">{error}</p>}<div className="result-note">This is not a safe driving speed or an official advisory speed. R is converted to feet. Friction assumptions vary with speed and conditions; the calculation does not solve an engineering study.</div></div></div><div className="notice"><strong>On the real map: insufficient verified inputs.</strong> Banking and side-friction measurements are unavailable for our candidates, so the auditor does not calculate a driving speed.</div><a className="text-link" href="https://highways.dot.gov/sites/fhwa.dot.gov/files/2022-06/fhwasa1122.pdf" target="_blank" rel="noreferrer">Read FHWA’s procedures for setting advisory speeds <ArrowUpRight size={16}/></a></section>;
+import { useState } from "react";
+import { ArrowUpRight, FlaskConical } from "lucide-react";
+import { scenarioSpeed } from "./engineering.mjs";
+export default function Physics() {
+  const [radius, setRadius] = useState("150"),
+    [unit, setUnit] = useState("m"),
+    [bank, setBank] = useState("0.04"),
+    [friction, setFriction] = useState("0.12");
+  let result: number | null = null,
+    error = "";
+  try {
+    result = scenarioSpeed(radius, unit, bank, friction);
+  } catch (e) {
+    error = (e as Error).message;
+  }
+  return (
+    <section className="page">
+      <div className="eyebrow">THE ENGINEERING / EXPLAINED</div>
+      <h1>
+        A little geometry.
+        <br />
+        <em>A lot to understand.</em>
+      </h1>
+      <p className="lead">
+        Explore how radius, banking and a side-friction assumption interact.
+        Every value here is a hypothetical input.
+      </p>
+      <div className="physics-grid">
+        <div className="panel form-panel">
+          <div className="panel-title">
+            <FlaskConical size={20} />
+            <h2>Build a scenario</h2>
+          </div>
+          <label>
+            Horizontal radius
+            <div className="input-row">
+              <input
+                type="number"
+                min="1"
+                value={radius}
+                onChange={(e) => setRadius(e.target.value)}
+              />
+              <select
+                aria-label="Radius unit"
+                value={unit}
+                onChange={(e) => setUnit(e.target.value)}
+              >
+                <option value="m">meters</option>
+                <option value="ft">feet</option>
+              </select>
+            </div>
+          </label>
+          <label>
+            Superelevation, e{" "}
+            <small>Assumed banking as a decimal; 0.04 = 4%</small>
+            <input
+              type="number"
+              min="0"
+              max="0.12"
+              step="0.01"
+              value={bank}
+              onChange={(e) => setBank(e.target.value)}
+            />
+          </label>
+          <label>
+            Side-friction factor, f{" "}
+            <small>
+              Educational assumption; not measured pavement friction
+            </small>
+            <input
+              type="number"
+              min="0"
+              max="0.4"
+              step="0.01"
+              value={friction}
+              onChange={(e) => setFriction(e.target.value)}
+            />
+          </label>
+          <p className="muted">
+            Inputs are intentionally bounded to nonnegative educational
+            scenarios. Adverse cross-slope is outside this explorer.
+          </p>
+        </div>
+        <div className="physics-result">
+          <span className="eyebrow">HYPOTHETICAL SCENARIO</span>
+          <div className="formula">V = √15R(e + f)</div>
+          {result !== null ? (
+            <>
+              <div className="result-number">
+                {result.toFixed(1)}
+                <span>mph</span>
+              </div>
+              <p>Theoretical relationship output</p>
+            </>
+          ) : (
+            <p role="alert">{error}</p>
+          )}
+          <div className="result-note">
+            This is not a safe driving speed or an official advisory speed. R is
+            converted to feet. Friction assumptions vary with speed and
+            conditions; the calculation does not solve an engineering study.
+          </div>
+        </div>
+      </div>
+      <div className="notice">
+        <strong>On the real map: insufficient verified inputs.</strong> Banking
+        and side-friction measurements are unavailable for our candidates, so
+        the auditor does not calculate a driving speed.
+      </div>
+      <a
+        className="text-link"
+        href="https://highways.dot.gov/sites/fhwa.dot.gov/files/2022-06/fhwasa1122.pdf"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Read FHWA’s procedures for setting advisory speeds{" "}
+        <ArrowUpRight size={16} />
+      </a>
+    </section>
+  );
 }

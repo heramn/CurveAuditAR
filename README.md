@@ -86,7 +86,7 @@ No real driving or physical-device field trial was performed.
 
 GPS/motion permissions are requested only upon activation. Readings remain in
 memory; no telemetry or trip history is uploaded or persisted. Stop diagnostics
-or leave Co-Pilot to clear readings. CARTO tile and Google Fonts requests share
+or leave Co-Pilot to clear readings. OpenStreetMap tile and Google Fonts requests share
 network address with those providers; tiles also disclose requested map extent.
 
 GPS shows distance to geometry vertices; direction/map matching are unvalidated,

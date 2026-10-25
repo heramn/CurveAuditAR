@@ -1,0 +1,15 @@
+{
+  "source": "NWARPC NWA Vision Zero Plan, Appendix B, Table 18",
+  "url": "https://www.nwarpc.org/wp-content/uploads/2023/07/NW-Arkansas-Vision-Zero-Plan_APPENDIX_B_Final_web.pdf#page=22",
+  "printedPage": 48,
+  "period": "2017–2021",
+  "geography": "NWARPC study boundary, including Arkansas and Missouri; not AR-3",
+  "urbanRuralDefinition": "2020 Census urban areas; locations outside these areas classified rural",
+  "retrievedDateLocal": "2026-10-24",
+  "status": "Manually transcribed and verified primary-publication aggregate; no raw crash records imported",
+  "rows": [
+    {"setting":"Urban","reportedCrashes":45806,"fatalOrSeriousInjuryCrashes":785},
+    {"setting":"Rural","reportedCrashes":13090,"fatalOrSeriousInjuryCrashes":584}
+  ],
+  "limitation": "Outcome proportions among reported crashes, not fatality rates per resident, exposure-adjusted driving risk, or current-year conditions"
+}

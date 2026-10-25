@@ -11,6 +11,7 @@ playwright-report/
 .idea/
 .vscode/
 *.tsbuildinfo
+public/release.json
 
 .vercel
 .env*

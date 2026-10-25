@@ -18,8 +18,8 @@ County and district reference geography: U.S. Census Bureau TIGERweb,
 public government data. Source service URLs and retrieval timestamps are
 in `data/raw/*-provenance.json`.
 
-Basemap tiles: © OpenStreetMap contributors, © CARTO.
-https://carto.com/attributions
+Basemap tiles: © OpenStreetMap contributors, OpenStreetMap Foundation.
+https://operations.osmfoundation.org/policies/tiles/
 Tile access requires connectivity and is subject to provider terms.
 The map's locally bundled roads and curve overlays remain available if tiles fail.
 
