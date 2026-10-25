@@ -8,6 +8,11 @@ Production target: https://curveauditar.vercel.app
 Repository: https://github.com/heramn/CurveAuditAR
 Actual deployment and testing status: [docs/VERIFICATION.md](docs/VERIFICATION.md).
 
+![Production Auditor with real Eureka Springs geometry](docs/screenshots/production-auditor.png)
+
+[Production Co-Pilot screenshot](docs/screenshots/production-copilot.png) ·
+[Verified one-page sample audit PDF](output/pdf/curveaudit-magnetic-drive-sample.pdf)
+
 ## Features
 
 - Interactive Leaflet auditor with real road geometry, county polygons,
@@ -22,6 +27,8 @@ Actual deployment and testing status: [docs/VERIFICATION.md](docs/VERIFICATION.m
 - Foreground GPS proximity and stationary motion sampling diagnostics.
 - Educational physics explorer with explicit hypothetical inputs and validation.
 - Local Impact, Methodology, Data & Sources registry, and 17 core/dataset tests.
+- Fifteen automated browser regressions at desktop (1440 px), tablet (768 px)
+  and phone (390 px) widths, including denied-permission handling and print.
 
 NWARPC already uses road geometry and OSM. The contribution is the integrated,
 reproducible inventory, transparent calculations, report workflow and audio
@@ -42,6 +49,7 @@ npm run dev
 npm test
 npm run build
 npm run preview
+npm run verify:production
 ```
 
 ## Regenerate geographic data
