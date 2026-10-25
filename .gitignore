@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.vercel/
+.env*
+!.env.example
+test-results/
+playwright-report/
+*.log
+*.pbf
+.DS_Store
+.idea/
+.vscode/
+*.tsbuildinfo
+
+.vercel
+.env*
