@@ -3,29 +3,23 @@ import {
   ArrowDownToLine,
   ArrowRight,
   ArrowUpRight,
-  Check,
   ChevronRight,
-  Compass,
+  ExternalLink,
   FileText,
-  FlaskConical,
-  Layers,
-  Map as MapIcon,
+  Info,
   MapPin,
   Navigation,
   Search,
-  ShieldCheck,
   SlidersHorizontal,
-  Route,
-  Info,
-  ExternalLink,
-  Menu,
 } from "lucide-react";
 import MapView from "./MapView";
 import Physics from "./Physics";
 import Copilot from "./Copilot";
 import Report from "./Report";
 import Research from "./Research";
+import CurveSketch from "./CurveSketch";
 import type { Candidate, Stats } from "./types";
+
 type View =
   | "auditor"
   | "copilot"
@@ -34,30 +28,52 @@ type View =
   | "methodology"
   | "sources"
   | "report";
+
 const navigation = [
-  { id: "auditor", label: "Infrastructure Auditor", icon: MapIcon },
-  { id: "copilot", label: "Pocket Co-Pilot", icon: Navigation },
-  { id: "physics", label: "Physics Explorer", icon: FlaskConical },
-  { id: "impact", label: "Local Impact", icon: Compass },
-  { id: "methodology", label: "Methodology", icon: Layers },
-  { id: "sources", label: "Data & Sources", icon: FileText },
+  { id: "auditor", label: "Auditor" },
+  { id: "copilot", label: "Co-Pilot" },
+  { id: "physics", label: "Physics" },
+  { id: "impact", label: "Local impact" },
+  { id: "methodology", label: "Method" },
+  { id: "sources", label: "Sources" },
 ] as const;
+
+const views: string[] = [
+  "auditor",
+  "copilot",
+  "physics",
+  "impact",
+  "methodology",
+  "sources",
+  "report",
+];
+
+function SignMark() {
+  return (
+    <svg viewBox="0 0 40 40" aria-hidden="true">
+      <path
+        d="M20 2 38 20 20 38 2 20Z"
+        fill="#f7c600"
+        stroke="#13263a"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M15.5 28.5C15.5 21 24 22 24 14.5M19.5 18.5 24 13.5l4.5 5"
+        fill="none"
+        stroke="#13263a"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export default function App() {
   const [view, setView] = useState<View>(() => {
       const v = new URLSearchParams(location.search).get("view");
-      return (
-        [
-          "auditor",
-          "copilot",
-          "physics",
-          "impact",
-          "methodology",
-          "sources",
-          "report",
-        ].includes(v || "")
-          ? v
-          : "auditor"
-      ) as View;
+      return (views.includes(v || "") ? v : "auditor") as View;
     }),
     [curves, setCurves] = useState<Candidate[]>([]),
     [stats, setStats] = useState<Stats | null>(null),
@@ -65,8 +81,7 @@ export default function App() {
     [county, setCounty] = useState("All counties"),
     [priority, setPriority] = useState("All priorities"),
     [query, setQuery] = useState(""),
-    [error, setError] = useState(""),
-    [menu, setMenu] = useState(false);
+    [error, setError] = useState("");
   useEffect(() => {
     const abort = new AbortController();
     Promise.all(
@@ -120,7 +135,6 @@ export default function App() {
   function navigate(v: View) {
     history.replaceState(null, "", v === "auditor" ? "/" : "/?view=" + v);
     setView(v);
-    setMenu(false);
     window.scrollTo({ top: 0 });
   }
   function download() {
@@ -141,6 +155,14 @@ export default function App() {
     a.click();
     URL.revokeObjectURL(url);
   }
+  const dataDate = stats
+    ? new Date(stats.processedAt).toLocaleDateString("en-US", {
+        timeZone: "America/Chicago",
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      })
+    : "";
   return (
     <>
       <a className="skip-link" href="#main">
@@ -152,462 +174,399 @@ export default function App() {
           onClick={() => navigate("auditor")}
           aria-label="CurveAudit AR home"
         >
-          <span className="brand-symbol">
-            <Route size={26} />
-          </span>
+          <SignMark />
           <span>
             CurveAudit<span className="brand-ar">AR</span>
-            <small>THE ROAD AHEAD, UNDERSTOOD.</small>
           </span>
         </button>
-        <div className="top-location">
-          <span className="live-dot" /> NORTHWEST ARKANSAS{" "}
-          <span className="version">PILOT V1.0</span>
-        </div>
-        <button className="top-method" onClick={() => navigate("methodology")}>
-          Built on real geometry <ArrowUpRight size={15} />
-        </button>
-        <button
-          className="mobile-menu icon-button"
-          aria-label="Toggle navigation"
-          aria-expanded={menu}
-          onClick={() => setMenu(!menu)}
-        >
-          <Menu />
-        </button>
-      </header>
-      <div className="app-layout">
-        <aside className={`sidebar ${menu ? "open" : ""}`}>
-          <div className="sidebar-label">YOUR WORKSPACE</div>
-          <nav aria-label="Main navigation">
-            {navigation.map(({ id, label, icon: Icon }, i) => (
-              <button
-                key={id}
-                className={
-                  view === id || (view === "report" && id === "auditor")
-                    ? "nav-item active"
-                    : "nav-item"
-                }
-                onClick={() => navigate(id)}
-              >
-                <Icon size={18} />
-                <span>{label}</span>
-                {i < 2 && <ChevronRight size={14} />}
-              </button>
-            ))}
-          </nav>
-          <div className="sidebar-bottom">
-            <div className="pilot-card">
-              <span className="eyebrow">OUR STARTING POINT</span>
-              <div className="mini-landscape">
-                <svg viewBox="0 0 200 75" aria-hidden="true">
-                  <path
-                    d="M0 65L38 32 60 48 102 9 150 48 170 35 200 65"
-                    fill="#d9e2d4"
-                  />
-                  <path
-                    d="M70 75Q70 58 105 44T110 20"
-                    fill="none"
-                    stroke="#739583"
-                    strokeWidth="5"
-                    strokeDasharray="4 3"
-                  />
-                </svg>
-              </div>
-              <strong>
-                Four communities.
-                <br />A shared road ahead.
-              </strong>
-              <p>
-                Huntsville · Eureka Springs
-                <br />
-                Springdale · Bentonville
-              </p>
-              <button onClick={() => navigate("impact")}>
-                Explore the local impact <ArrowRight size={14} />
-              </button>
-            </div>
-            <div className="sidebar-note">
-              <ShieldCheck size={17} />
-              <span>
-                Preliminary screening.
-                <br />
-                Professional review comes next.
-              </span>
-            </div>
-            <a
-              href="https://github.com/heramn/CurveAuditAR"
-              target="_blank"
-              rel="noreferrer"
+        <nav className="tabs" aria-label="Main navigation">
+          {navigation.map(({ id, label }) => (
+            <button
+              key={id}
+              className="tab"
+              aria-current={
+                view === id || (view === "report" && id === "auditor")
+                  ? "page"
+                  : undefined
+              }
+              onClick={() => navigate(id)}
             >
-              Open source on GitHub <ExternalLink size={12} />
-            </a>
+              {label}
+            </button>
+          ))}
+        </nav>
+        <div className="stamp">
+          {stats ? `Data processed ${dataDate}` : "Loading dataset"}
+        </div>
+      </header>
+      <main id="main">
+        {error ? (
+          <div className="page">
+            <h1>The dataset could not load.</h1>
+            <p role="alert">{error}</p>
+            <button className="button" onClick={() => location.reload()}>
+              Retry loading
+            </button>
           </div>
-        </aside>
-        <main id="main">
-          <div className="workspace-breadcrumb">
-            WORKSPACE <ChevronRight size={12} />
-            <span>
-              {view === "report"
-                ? "Preliminary Audit"
-                : navigation.find((n) => n.id === view)?.label}
-            </span>
-            <div className="updated">
-              <span className="live-dot" />{" "}
-              {stats
-                ? `Data processed ${new Date(stats.processedAt).toLocaleDateString("en-US", { timeZone: "America/Chicago", month: "short", day: "numeric", year: "numeric" })}`
-                : "Loading local dataset"}
-            </div>
+        ) : !stats ? (
+          <div className="loading" role="status">
+            <SignMark />
+            <p>Loading the Northwest Arkansas pilot…</p>
           </div>
-          {error ? (
-            <div className="page">
-              <h1>The dataset could not load.</h1>
-              <p role="alert">{error}</p>
-              <button className="button" onClick={() => location.reload()}>
-                Retry loading
-              </button>
-            </div>
-          ) : !stats ? (
-            <div className="loading" role="status">
-              <Route size={30} />
-              <p>Loading the Northwest Arkansas pilot…</p>
-            </div>
-          ) : view === "auditor" ? (
-            <>
-              <section className="auditor-intro">
-                <div>
-                  <div className="eyebrow">
-                    GEOMETRY FIRST. LOCAL BY DESIGN.
-                  </div>
-                  <h1>
-                    A closer look at
-                    <br className="desktop-break" /> <em>the road ahead.</em>
-                  </h1>
-                  <p>
-                    Find the curves that deserve a closer look. Turn real road
-                    <br className="desktop-break" /> geometry into a practical
-                    starting point for field review.
-                  </p>
-                </div>
-                <div className="intro-note">
-                  <div className="intro-note-icon">
-                    <MapPin size={21} />
-                  </div>
-                  <div>
-                    <strong>
-                      From the Ozarks,
-                      <br />
-                      for the Ozarks.
-                    </strong>
-                    <span>An independent civic engineering prototype</span>
-                  </div>
-                </div>
-              </section>
-              <section className="metrics" aria-label="Pilot dataset metrics">
-                <div>
-                  <span>ROAD WAYS PROCESSED</span>
-                  <strong>
-                    {stats.ways.toLocaleString()}
-                    <small>
-                      {stats.analyzedKm.toLocaleString()} km analyzed
-                    </small>
-                  </strong>
-                </div>
-                <div>
-                  <span>CURVE CANDIDATES</span>
-                  <strong>
-                    {stats.candidates.toLocaleString()}
-                    <small>Geometry-based screening</small>
-                  </strong>
-                </div>
-                <div>
-                  <span>PILOT COUNTIES</span>
-                  <strong>
-                    {stats.counties.length.toString().padStart(2, "0")}
-                    <small>Northwest Arkansas</small>
-                  </strong>
-                </div>
-                <div>
-                  <span>VERIFIED SPEED INPUTS</span>
-                  <strong>
-                    {stats.verifiedSpeeds.toString().padStart(2, "0")}
-                    <small>Field evidence needed</small>
-                  </strong>
-                </div>
-              </section>
-              <section className="auditor-workspace">
-                <div className="section-heading">
-                  <div>
-                    <span className="eyebrow">INFRASTRUCTURE AUDITOR</span>
-                    <h2>
-                      Explore the curve inventory
-                      <span className="count-badge">
-                        {filtered.length} shown
-                      </span>
-                    </h2>
-                  </div>
-                  <button className="button ghost small" onClick={download}>
-                    <ArrowDownToLine size={15} /> Export GeoJSON
-                  </button>
-                </div>
-                <div className="filterbar">
-                  <label className="search-field">
-                    <Search size={17} />
-                    <input
-                      aria-label="Search roads or places"
-                      placeholder="Search a road, place or candidate…"
-                      value={query}
-                      onChange={(e) => setQuery(e.target.value)}
-                    />
-                  </label>
-                  <label className="filter-select">
-                    <MapPin size={15} />
-                    <select
-                      aria-label="County filter"
-                      value={county}
-                      onChange={(e) => setCounty(e.target.value)}
-                    >
-                      <option>All counties</option>
-                      {stats.counties.map((c) => (
-                        <option key={c}>{c}</option>
-                      ))}
-                    </select>
-                  </label>
-                  <label className="filter-select">
-                    <SlidersHorizontal size={15} />
-                    <select
-                      aria-label="Priority filter"
-                      value={priority}
-                      onChange={(e) => setPriority(e.target.value)}
-                    >
-                      <option>All priorities</option>
-                      {[
-                        "Higher",
-                        "Moderate",
-                        "Lower",
-                        "Insufficient evidence",
-                      ].map((p) => (
-                        <option key={p}>{p}</option>
-                      ))}
-                    </select>
-                  </label>
-                  {(query ||
-                    county !== "All counties" ||
-                    priority !== "All priorities") && (
-                    <button
-                      className="clear-filter"
-                      onClick={() => {
-                        setQuery("");
-                        setCounty("All counties");
-                        setPriority("All priorities");
-                      }}
-                    >
-                      Clear
-                    </button>
-                  )}
-                </div>
-                <div className="map-and-details">
-                  <MapView
-                    curves={filtered}
-                    selected={active}
-                    onSelect={setSelected}
-                  />
-                  <aside
-                    className="candidate-panel"
-                    aria-label="Selected curve details"
+        ) : view === "auditor" ? (
+          <>
+            <section className="hero">
+              <div className="hero-copy">
+                <h1>A closer look at the road ahead.</h1>
+                <p className="lead">
+                  Screen real Northwest Arkansas road geometry for curves that
+                  deserve a field visit, then print a preliminary audit for the
+                  ones you pick.
+                </p>
+                <div className="hero-actions">
+                  <button
+                    className="button primary"
+                    onClick={() =>
+                      document
+                        .getElementById("inventory")
+                        ?.scrollIntoView({ behavior: "smooth" })
+                    }
                   >
-                    {active ? (
-                      <>
-                        <div className="detail-top">
-                          <span className="eyebrow">SELECTED CANDIDATE</span>
-                          <span
-                            className={`priority priority-${active.properties.priority.split(" ")[0].toLowerCase()}`}
-                          >
-                            <i />
-                            {active.properties.priority} review priority
-                          </span>
-                        </div>
-                        <h2>{active.properties.name}</h2>
-                        <p className="location">
-                          <MapPin size={14} />
-                          {active.properties.county} County ·{" "}
-                          {active.properties.pilot}
-                        </p>
-                        <div className="curve-measure">
-                          <span>ESTIMATED HORIZONTAL RADIUS</span>
-                          <strong>
-                            {active.properties.radiusM}
-                            <small>m</small>
-                          </strong>
-                          <p>
-                            ≈{" "}
-                            {Math.round(
-                              active.properties.radiusM / 0.3048,
-                            ).toLocaleString()}{" "}
-                            ft <span>OSM centerline estimate</span>
-                          </p>
-                        </div>
-                        <div className="detail-pair">
-                          <div>
-                            <span>HEADING CHANGE</span>
-                            <strong>
-                              {active.properties.headingDeg}°{" "}
-                              <small>
-                                {active.properties.direction.toLowerCase()}
-                              </small>
-                            </strong>
-                          </div>
-                          <div>
-                            <span>CURVE LENGTH</span>
-                            <strong>
-                              {active.properties.lengthM}
-                              <small> m</small>
-                            </strong>
-                          </div>
-                        </div>
-                        <dl className="evidence-list">
-                          <dt>Posted speed</dt>
-                          <dd>Not verified</dd>
-                          <dt>Banking & friction</dt>
-                          <dd>Unknown</dd>
-                          <dt>Engineering status</dt>
-                          <dd>Not field reviewed</dd>
-                        </dl>
-                        <div className="why-review">
-                          <Info size={16} />
-                          <div>
-                            <strong>Why take a closer look?</strong>
-                            <p>{active.properties.rationale}</p>
-                          </div>
-                        </div>
-                        <button
-                          className="button full"
-                          onClick={() => {
-                            setSelected(active);
-                            navigate("report");
-                            history.replaceState(
-                              null,
-                              "",
-                              "/?view=report&candidate=" + active.properties.id,
-                            );
-                          }}
-                        >
-                          <FileText size={17} /> Generate preliminary audit{" "}
-                          <ArrowRight size={15} />
-                        </button>
-                        <button
-                          className="text-link"
-                          onClick={() => navigate("copilot")}
-                        >
-                          <Navigation size={15} /> Try the Co-Pilot demo{" "}
-                          <ArrowUpRight size={14} />
-                        </button>
-                        <a
-                          className="source-link"
-                          href={`https://www.openstreetmap.org/way/${active.properties.osmId}`}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          OSM way {active.properties.osmId} · source geometry{" "}
-                          <ExternalLink size={12} />
-                        </a>
-                      </>
-                    ) : (
-                      <div className="empty-state">
-                        <Search size={27} />
-                        <h3>No matching curves</h3>
-                        <p>Try another county, priority or road name.</p>
-                      </div>
-                    )}
-                  </aside>
-                </div>
-                <div className="map-footnote">
-                  <Info size={14} />
-                  <span>
-                    Priority helps organize field review. It is not a
-                    dangerous-road designation or a prediction of a crash.
-                  </span>
-                  <button onClick={() => navigate("methodology")}>
-                    How it works <ArrowUpRight size={12} />
+                    Explore the inventory <ArrowRight size={18} />
+                  </button>
+                  <button
+                    className="button ghost"
+                    onClick={() => navigate("methodology")}
+                  >
+                    Read the method
                   </button>
                 </div>
-                <details className="inventory">
-                  <summary>
-                    Browse all {filtered.length} matching candidates
-                  </summary>
-                  <div className="candidate-list">
-                    {filtered.map((c) => (
-                      <button
-                        key={c.properties.id}
-                        onClick={() => {
-                          setSelected(c);
-                          document
-                            .querySelector(".map-and-details")
-                            ?.scrollIntoView({
-                              behavior: "smooth",
-                              block: "start",
-                            });
-                        }}
-                        className={
-                          active?.properties.id === c.properties.id
-                            ? "chosen"
-                            : ""
-                        }
-                      >
-                        <span>
-                          {c.properties.name}
-                          <small>
-                            {c.properties.county} · {c.properties.id}
-                          </small>
-                        </span>
-                        <span>
-                          {c.properties.radiusM} m <ChevronRight size={14} />
-                        </span>
-                      </button>
-                    ))}
+              </div>
+              {active && (
+                <figure className="sheet">
+                  <CurveSketch key={active.properties.id} candidate={active} />
+                  <figcaption>
+                    <div>
+                      <span>Radius</span>
+                      <strong>≈ {active.properties.radiusM} m</strong>
+                    </div>
+                    <div>
+                      <span>Heading change</span>
+                      <strong>
+                        {active.properties.headingDeg}°{" "}
+                        {active.properties.direction.toLowerCase()}
+                      </strong>
+                    </div>
+                    <div>
+                      <span>Length</span>
+                      <strong>{active.properties.lengthM} m</strong>
+                    </div>
+                  </figcaption>
+                  <div className="sheet-title">
+                    <span>{active.properties.name}</span>
+                    <span>{active.properties.county} County</span>
                   </div>
-                </details>
-              </section>
-              <section className="workflow-strip">
-                <div className="eyebrow">FROM DATA TO A BETTER QUESTION</div>
-                <div>
-                  <span>
-                    <b>01</b> Real road geometry
-                  </span>
-                  <ArrowRight size={16} />
-                  <span>
-                    <b>02</b> Transparent screening
-                  </span>
-                  <ArrowRight size={16} />
-                  <span>
-                    <b>03</b> Professional field review
-                  </span>
+                </figure>
+              )}
+            </section>
+            <section className="titleblock" aria-label="Pilot dataset metrics">
+              <div>
+                <span>Road ways processed</span>
+                <strong>{stats.ways.toLocaleString()}</strong>
+                <small>{stats.analyzedKm.toLocaleString()} km analyzed</small>
+              </div>
+              <div>
+                <span>Curve candidates</span>
+                <strong>{stats.candidates.toLocaleString()}</strong>
+                <small>Geometry-based screening</small>
+              </div>
+              <div>
+                <span>Pilot counties</span>
+                <strong>
+                  {stats.counties.length.toString().padStart(2, "0")}
+                </strong>
+                <small>Northwest Arkansas</small>
+              </div>
+              <div>
+                <span>Verified speed inputs</span>
+                <strong>
+                  {stats.verifiedSpeeds.toString().padStart(2, "0")}
+                </strong>
+                <small>Field evidence needed</small>
+              </div>
+              <p className="titleblock-foot">
+                Pilot areas: Huntsville, Eureka Springs, Springdale and
+                Bentonville. Preliminary screening only; professional review
+                comes next.
+              </p>
+            </section>
+            <section className="auditor-workspace" id="inventory">
+              <div className="section-heading">
+                <h2>
+                  Explore the curve inventory
+                  <span className="count-badge">{filtered.length} shown</span>
+                </h2>
+                <button className="button ghost small" onClick={download}>
+                  <ArrowDownToLine size={16} /> Export GeoJSON
+                </button>
+              </div>
+              <div className="filterbar">
+                <label className="search-field">
+                  <Search size={18} />
+                  <input
+                    aria-label="Search roads or places"
+                    placeholder="Search a road, place or candidate"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                  />
+                </label>
+                <label className="filter-select">
+                  <MapPin size={16} />
+                  <select
+                    aria-label="County filter"
+                    value={county}
+                    onChange={(e) => setCounty(e.target.value)}
+                  >
+                    <option>All counties</option>
+                    {stats.counties.map((c) => (
+                      <option key={c}>{c}</option>
+                    ))}
+                  </select>
+                </label>
+                <label className="filter-select">
+                  <SlidersHorizontal size={16} />
+                  <select
+                    aria-label="Priority filter"
+                    value={priority}
+                    onChange={(e) => setPriority(e.target.value)}
+                  >
+                    <option>All priorities</option>
+                    {[
+                      "Higher",
+                      "Moderate",
+                      "Lower",
+                      "Insufficient evidence",
+                    ].map((p) => (
+                      <option key={p}>{p}</option>
+                    ))}
+                  </select>
+                </label>
+                {(query ||
+                  county !== "All counties" ||
+                  priority !== "All priorities") && (
+                  <button
+                    className="clear-filter"
+                    onClick={() => {
+                      setQuery("");
+                      setCounty("All counties");
+                      setPriority("All priorities");
+                    }}
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+              <div className="map-and-details">
+                <MapView
+                  curves={filtered}
+                  selected={active}
+                  onSelect={setSelected}
+                />
+                <aside
+                  className="candidate-panel"
+                  aria-label="Selected curve details"
+                >
+                  {active ? (
+                    <>
+                      <span
+                        className={`priority priority-${active.properties.priority.split(" ")[0].toLowerCase()}`}
+                      >
+                        <i />
+                        {active.properties.priority} review priority
+                      </span>
+                      <h2>{active.properties.name}</h2>
+                      <p className="location">
+                        <MapPin size={15} />
+                        {active.properties.county} County ·{" "}
+                        {active.properties.pilot}
+                      </p>
+                      <div className="radius">
+                        <strong>
+                          {active.properties.radiusM}
+                          <small>m</small>
+                        </strong>
+                        <span>
+                          Estimated horizontal radius, about{" "}
+                          {Math.round(
+                            active.properties.radiusM / 0.3048,
+                          ).toLocaleString()}{" "}
+                          ft, from the OSM centerline
+                        </span>
+                      </div>
+                      <dl className="data-table">
+                        <dt>Heading change</dt>
+                        <dd>
+                          {active.properties.headingDeg}°{" "}
+                          {active.properties.direction.toLowerCase()}
+                        </dd>
+                        <dt>Curve length</dt>
+                        <dd>{active.properties.lengthM} m</dd>
+                        <dt>Posted speed</dt>
+                        <dd>Not verified</dd>
+                        <dt>Banking & friction</dt>
+                        <dd>Unknown</dd>
+                        <dt>Engineering status</dt>
+                        <dd>Not field reviewed</dd>
+                      </dl>
+                      <div className="why-review">
+                        <Info size={18} />
+                        <div>
+                          <strong>Why take a closer look?</strong>
+                          <p>{active.properties.rationale}</p>
+                        </div>
+                      </div>
+                      <button
+                        className="button primary full"
+                        onClick={() => {
+                          setSelected(active);
+                          navigate("report");
+                          history.replaceState(
+                            null,
+                            "",
+                            "/?view=report&candidate=" + active.properties.id,
+                          );
+                        }}
+                      >
+                        <FileText size={18} /> Generate preliminary audit
+                      </button>
+                      <button
+                        className="text-link"
+                        onClick={() => navigate("copilot")}
+                      >
+                        <Navigation size={16} /> Try the Co-Pilot demo{" "}
+                        <ArrowUpRight size={15} />
+                      </button>
+                      <a
+                        className="source-link"
+                        href={`https://www.openstreetmap.org/way/${active.properties.osmId}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        OSM way {active.properties.osmId}, source geometry{" "}
+                        <ExternalLink size={13} />
+                      </a>
+                    </>
+                  ) : (
+                    <div className="empty-state">
+                      <Search size={28} />
+                      <h3>No matching curves</h3>
+                      <p>Try another county, priority or road name.</p>
+                    </div>
+                  )}
+                </aside>
+              </div>
+              <div className="map-footnote">
+                <Info size={16} />
+                <span>
+                  Priority helps organize field review. It is not a
+                  dangerous-road designation or a prediction of a crash.
+                </span>
+                <button onClick={() => navigate("methodology")}>
+                  How it works <ArrowUpRight size={14} />
+                </button>
+              </div>
+              <details className="inventory">
+                <summary>
+                  Browse all {filtered.length} matching candidates
+                </summary>
+                <div className="candidate-list">
+                  {filtered.map((c) => (
+                    <button
+                      key={c.properties.id}
+                      onClick={() => {
+                        setSelected(c);
+                        document
+                          .querySelector(".map-and-details")
+                          ?.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                          });
+                      }}
+                      className={
+                        active?.properties.id === c.properties.id
+                          ? "chosen"
+                          : ""
+                      }
+                    >
+                      <span>
+                        {c.properties.name}
+                        <small>
+                          {c.properties.county} · {c.properties.id}
+                        </small>
+                      </span>
+                      <span>
+                        {c.properties.radiusM} m <ChevronRight size={15} />
+                      </span>
+                    </button>
+                  ))}
                 </div>
-                <Check size={21} />
-              </section>
-            </>
-          ) : view === "physics" ? (
-            <Physics />
-          ) : view === "copilot" ? (
-            <Copilot curves={curves} initial={selected} />
-          ) : view === "report" && selected ? (
-            <Report candidate={selected} onBack={() => navigate("auditor")} />
-          ) : (
-            <Research
-              view={view}
-              stats={stats}
-              curves={curves}
-              onExplore={() => navigate("auditor")}
-            />
-          )}
-          <footer className="main-footer">
-            <span>
-              CURVEAUDIT AR <i>/</i> Built for the roads that connect us.
-            </span>
-            <span>Open data. Clear assumptions. Human judgment.</span>
-          </footer>
-        </main>
-      </div>
+              </details>
+            </section>
+            <section className="workflow" aria-label="How a candidate becomes a field visit">
+              <h2>From data to a better question</h2>
+              <ol>
+                <li>
+                  <b>1</b>
+                  <span>
+                    Real road geometry
+                    <small>OpenStreetMap centerlines, unaltered</small>
+                  </span>
+                </li>
+                <li>
+                  <b>2</b>
+                  <span>
+                    Transparent screening
+                    <small>Radius, heading change and length, in the open</small>
+                  </span>
+                </li>
+                <li>
+                  <b>3</b>
+                  <span>
+                    Professional field review
+                    <small>Where engineering judgment takes over</small>
+                  </span>
+                </li>
+              </ol>
+            </section>
+          </>
+        ) : view === "physics" ? (
+          <Physics />
+        ) : view === "copilot" ? (
+          <Copilot curves={curves} initial={selected} />
+        ) : view === "report" && selected ? (
+          <Report candidate={selected} onBack={() => navigate("auditor")} />
+        ) : (
+          <Research
+            view={view}
+            stats={stats}
+            curves={curves}
+            onExplore={() => navigate("auditor")}
+          />
+        )}
+      </main>
+      <footer className="main-footer">
+        <span>
+          CurveAudit AR is a preliminary screening tool, not an engineering
+          study. Open data, clear assumptions, human judgment.
+        </span>
+        <a
+          href="https://github.com/heramn/CurveAuditAR"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Open source on GitHub <ExternalLink size={13} />
+        </a>
+      </footer>
     </>
   );
 }

@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import type { Candidate } from "./types";
 const colors: Record<string, string> = {
-  Higher: "#c6753c",
-  Moderate: "#c49c40",
-  Lower: "#357d70",
-  "Insufficient evidence": "#828a86",
+  Higher: "#c93f0b",
+  Moderate: "#e0a800",
+  Lower: "#25778a",
+  "Insufficient evidence": "#7a8794",
 };
 export default function MapView({
   curves,
@@ -55,7 +55,7 @@ export default function MapView({
         if (map.current)
           L.geoJSON(data, {
             style: {
-              color: "#697d70",
+              color: "#566676",
               weight: 1,
               dashArray: "5 7",
               fillOpacity: 0.025,
@@ -69,7 +69,7 @@ export default function MapView({
       .then((data) => {
         if (map.current) {
           const roads = L.geoJSON(data, {
-            style: { color: "#9eafa3", weight: 1.8, opacity: 0.65 },
+            style: { color: "#8d9ba8", weight: 1.8, opacity: 0.7 },
             interactive: false,
           }).addTo(m);
           roads.bringToBack();
@@ -95,7 +95,7 @@ export default function MapView({
       const line = L.polyline(
         c.geometry.coordinates.map(([x, y]) => [y, x] as L.LatLngTuple),
         {
-          color: active ? "#173e35" : colors[p.priority],
+          color: active ? "#13263a" : colors[p.priority],
           weight: active ? 8 : 4,
           opacity: 1,
         },
@@ -104,7 +104,7 @@ export default function MapView({
       line.bindTooltip(`${p.name} · ~${p.radiusM} m radius`);
       const dot = L.circleMarker([p.center[1], p.center[0]], {
         radius: active ? 7 : 4,
-        color: active ? "#173e35" : "#fff",
+        color: active ? "#13263a" : "#fff",
         weight: active ? 3 : 1.5,
         fillColor: colors[p.priority],
         fillOpacity: 1,
@@ -129,7 +129,7 @@ export default function MapView({
           radius: 9,
           color: "#fff",
           weight: 3,
-          fillColor: "#357dd2",
+          fillColor: "#1c5f7d",
           fillOpacity: 1,
         }).addTo(map.current);
       else marker.current.setLatLng([position[1], position[0]]);
@@ -146,8 +146,7 @@ export default function MapView({
         aria-label="Interactive map of Northwest Arkansas roadway curve candidates"
       />
       <div className="map-tag">
-        <span className="live-dot" /> REAL ROAD GEOMETRY{" "}
-        <span> / NWA PILOT</span>
+        Real road geometry
       </div>
       {tileError && (
         <div className="tile-error">
