@@ -23,6 +23,10 @@ test("auditor filters, real geometry, selection and export", async ({
   await expect(
     page.locator(".leaflet-overlay-pane path").first(),
   ).toBeAttached();
+  await expect(page.getByText("Posted speed", { exact: true })).toBeVisible();
+  await expect(
+    page.getByText("Banking & friction", { exact: true }),
+  ).toBeVisible();
   await page
     .getByRole("combobox", { name: "County filter" })
     .selectOption("Madison");

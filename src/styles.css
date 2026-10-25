@@ -2215,6 +2215,32 @@ main {
   }
 }
 @media screen and (max-width: 700px) {
+  .curve-measure {
+    grid-column: 1;
+    grid-row: 4/6;
+  }
+  .detail-pair {
+    grid-column: 2;
+    grid-row: 4/6;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .detail-pair > div + div {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    padding-left: 0;
+    padding-top: 12px;
+  }
+  .evidence-list {
+    grid-column: 1/-1;
+    grid-row: 6;
+    grid-template-columns: 1fr auto;
+    padding: 14px 0;
+  }
+  .evidence-list dt {
+    display: block;
+  }
   .search-field input,
   .filter-select select,
   .form-panel input,
@@ -2228,7 +2254,7 @@ main {
     font-size: 9px;
   }
   .evidence-list {
-    font-size: 10px;
+    font-size: 11px;
   }
 }
 @media print {
