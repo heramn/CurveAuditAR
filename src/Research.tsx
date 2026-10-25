@@ -8,7 +8,6 @@ import {
 import { useEffect, useState } from "react";
 import type { Candidate, Stats } from "./types";
 import { sources } from "./sources";
-import regional from "../public/data/regional-context.json";
 export default function Research({
   view,
   stats,
@@ -21,7 +20,21 @@ export default function Research({
   onExplore: () => void;
 }) {
   const [district, setDistrict] = useState("");
+  const [regional, setRegional] = useState<{
+    period: string;
+    url: string;
+    geography: string;
+    rows: {
+      setting: string;
+      reportedCrashes: number;
+      fatalOrSeriousInjuryCrashes: number;
+    }[];
+  } | null>(null);
   useEffect(() => {
+    fetch("/data/regional-context.json")
+      .then((r) => (r.ok ? r.json() : null))
+      .then(setRegional)
+      .catch(() => {});
     fetch("/data/district-check.json")
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => {
@@ -239,6 +252,11 @@ export default function Research({
             regional planning boundary, including Arkansas and Missouri.
           </p>
           <p>
+            Action 3-15 calls for regional analysis of crashes on curves and
+            hills. The geometry inventory could help scope field investigations
+            alongside that established work.
+          </p>
+          <p>
             That study already uses OSM centerlines and considers infrastructure
             context. CurveAudit adds a reproducible curve inventory, inspectable
             assumptions, a printable review workflow and a stationary audio
@@ -254,51 +272,55 @@ export default function Research({
           </a>
         </article>
       </div>
-      <article className="panel regional-evidence">
-        <span className="eyebrow">PUBLISHED REGIONAL CONTEXT / 2017–2021</span>
-        <h2>Rural crashes had a larger serious-outcome share.</h2>
-        <p>
-          NWARPC’s historical study reports fatal or serious injury (KA)
-          outcomes in {regional.period}. This compares outcomes among reported
-          crashes, not the risk per trip or per resident.
-        </p>
-        <div
-          className="outcome-bars"
-          role="img"
-          aria-label="Share of reported crashes involving fatal or serious injury: urban 1.71 percent, rural 4.46 percent, NWARPC study area 2017 to 2021"
-        >
-          {regional.rows.map((row) => {
-            const percent =
-              (100 * row.fatalOrSeriousInjuryCrashes) / row.reportedCrashes;
-            return (
-              <div key={row.setting}>
-                <span>{row.setting}</span>
-                <div>
-                  <i style={{ width: `${(percent / 5) * 100}%` }} />
+      {regional && (
+        <article className="panel regional-evidence">
+          <span className="eyebrow">
+            PUBLISHED REGIONAL CONTEXT / 2017–2021
+          </span>
+          <h2>Rural crashes had a larger serious-outcome share.</h2>
+          <p>
+            NWARPC’s historical study reports fatal or serious injury (KA)
+            outcomes in {regional.period}. This compares outcomes among reported
+            crashes, not the risk per trip or per resident.
+          </p>
+          <div
+            className="outcome-bars"
+            role="img"
+            aria-label="Share of reported crashes involving fatal or serious injury: urban 1.71 percent, rural 4.46 percent, NWARPC study area 2017 to 2021"
+          >
+            {regional.rows.map((row) => {
+              const percent =
+                (100 * row.fatalOrSeriousInjuryCrashes) / row.reportedCrashes;
+              return (
+                <div key={row.setting}>
+                  <span>{row.setting}</span>
+                  <div>
+                    <i style={{ width: `${(percent / 5) * 100}%` }} />
+                  </div>
+                  <strong>{percent.toFixed(2)}%</strong>
+                  <small>
+                    {row.fatalOrSeriousInjuryCrashes.toLocaleString()} KA /{" "}
+                    {row.reportedCrashes.toLocaleString()} reported crashes
+                  </small>
                 </div>
-                <strong>{percent.toFixed(2)}%</strong>
-                <small>
-                  {row.fatalOrSeriousInjuryCrashes.toLocaleString()} KA /{" "}
-                  {row.reportedCrashes.toLocaleString()} reported crashes
-                </small>
-              </div>
-            );
-          })}
-        </div>
-        <p className="chart-note">
-          {regional.geography}. Urban/rural uses 2020 Census areas. Historical
-          proportions do not establish that any selected curve caused a crash.
-        </p>
-        <a
-          className="text-link"
-          href={regional.url}
-          target="_blank"
-          rel="noreferrer"
-        >
-          Inspect Appendix B, Table 18, printed page 48{" "}
-          <ArrowUpRight size={14} />
-        </a>
-      </article>
+              );
+            })}
+          </div>
+          <p className="chart-note">
+            {regional.geography}. Urban/rural uses 2020 Census areas. Historical
+            proportions do not establish that any selected curve caused a crash.
+          </p>
+          <a
+            className="text-link"
+            href={regional.url}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Inspect Appendix B, Table 18, printed page 48{" "}
+            <ArrowUpRight size={14} />
+          </a>
+        </article>
+      )}
       <div className="impact-facts">
         <div>
           <strong>{curves.length}</strong>
@@ -329,6 +351,23 @@ export default function Research({
           work. The pilot does not assume whole counties equal the congressional
           district.
         </p>
+      </div>
+      <div className="notice">
+        <strong>A local example of why geometry needs human review</strong>
+        <p>
+          The plan’s Appendix A says the historical West Huntsville Avenue High
+          Injury Network extent was manually extended through the White Road
+          curve to connect adjacent crash areas. That documents a network-method
+          refinement, not a current finding about curve signs.
+        </p>
+        <a
+          className="text-link"
+          href="https://www.nwarpc.org/wp-content/uploads/2023/07/NW-Arkansas-Vision-Zero-Plan_APPENDIX_A_Final_web.pdf#page=12"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Inspect the source, printed page 16 <ArrowUpRight size={14} />
+        </a>
       </div>
       <div className="notice">
         <strong>Why there isn’t a county fatality-rate chart here</strong>

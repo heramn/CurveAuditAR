@@ -62,9 +62,13 @@ https://www.nwarpc.org/wp-content/uploads/2023/07/NW-Arkansas-Vision-Zero-Plan_A
   The suggested Benton 9.3, Carroll 23.5, Madison 35.8 rates and approximately
   100 annual AR-3 deaths remain unverified and are excluded from the product.
 - The complete main Vision Zero PDF exceeded the web extraction tool's size
-  limit. The requested curves/hills action text and a specific curve-level
-  West Huntsville/White Road finding were not independently established in
-  the first release; no such claim is made.
+  limit. Local PDF extraction subsequently verified Action 3-15, printed
+  p.47 (PDF p.59): regional crash analysis focusing on curves and hills,
+  led by NWARPC with ARDOT and member agencies. Appendix A, printed p.16
+  (PDF p.12), verifies the West Huntsville Avenue HIN extent was manually
+  extended through the White Road curve to bridge a gap between crash areas.
+  This is historical network methodology, not a current sign-deficiency finding.
+  https://www.nwarpc.org/wp-content/uploads/2023/07/NW-Arkansas-Vision-Zero-Plan_APPENDIX_A_Final_web.pdf
 
 ## Engineering references
 

@@ -21,7 +21,7 @@ Actual deployment and testing status: [docs/VERIFICATION.md](docs/VERIFICATION.m
   changing distance, once-per-run speech request, stop/reset/replay controls.
 - Foreground GPS proximity and stationary motion sampling diagnostics.
 - Educational physics explorer with explicit hypothetical inputs and validation.
-- Local Impact, Methodology, Data & Sources registry, and 16 meaningful tests.
+- Local Impact, Methodology, Data & Sources registry, and 17 core/dataset tests.
 
 NWARPC already uses road geometry and OSM. The contribution is the integrated,
 reproducible inventory, transparent calculations, report workflow and audio

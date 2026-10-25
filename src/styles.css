@@ -2153,7 +2153,94 @@ main {
   color: #8a9b7b;
   font-size: 10px;
 }
+@media screen {
+  .nav-item {
+    font-size: 12px;
+  }
+  .filter-select select,
+  .search-field input {
+    font-size: 12px;
+  }
+  .metrics > div > span {
+    font-size: 9px;
+    color: #65715b;
+  }
+  .metrics small {
+    font-size: 10px;
+    color: #67775c;
+  }
+  .evidence-list {
+    font-size: 11px;
+  }
+  .evidence-list dt {
+    color: #67775c;
+  }
+  .why-review strong {
+    font-size: 11px;
+  }
+  .why-review p {
+    font-size: 10px;
+    color: #68775f;
+  }
+  .candidate-panel > .text-link {
+    font-size: 11px;
+  }
+  .source-link {
+    font-size: 9px;
+  }
+  .detail-pair span {
+    font-size: 8px;
+    color: #67775c;
+  }
+  .curve-measure > span {
+    font-size: 8px;
+    color: #67775c;
+  }
+  .curve-measure p {
+    font-size: 10px;
+  }
+  .curve-measure p span {
+    font-size: 9px;
+  }
+  .location {
+    font-size: 11px;
+    color: #6a795f;
+  }
+  .map-footnote {
+    font-size: 10px;
+    color: #69775e;
+  }
+  .priority {
+    font-size: 10px;
+  }
+}
+@media screen and (max-width: 700px) {
+  .search-field input,
+  .filter-select select,
+  .form-panel input,
+  .form-panel select {
+    font-size: 16px;
+  }
+  .curve-measure p span {
+    font-size: 8px;
+  }
+  .metrics small {
+    font-size: 9px;
+  }
+  .evidence-list {
+    font-size: 10px;
+  }
+}
 @media print {
+  :root,
+  #root,
+  main {
+    background: white !important;
+    min-height: 0 !important;
+  }
+  .app-layout {
+    min-height: 0 !important;
+  }
   @page {
     size: A4;
     margin: 15mm;
@@ -2188,11 +2275,11 @@ main {
   }
   .report p,
   .report li {
-    font-size: 9px;
-    line-height: 1.6;
+    font-size: 9pt;
+    line-height: 1.4;
   }
   .report h2 {
-    font-size: 13px;
+    font-size: 11pt;
     margin: 16px 0 10px;
     break-after: avoid;
   }
@@ -2204,19 +2291,19 @@ main {
     max-width: 170px;
   }
   .report dl {
-    font-size: 8px;
+    font-size: 8.5pt;
     gap: 8px;
   }
   .report-meta {
     margin: 15px 0;
     padding: 10px 0;
-    font-size: 7px;
+    font-size: 7.5pt;
   }
   .report-sub {
-    font-size: 13px;
+    font-size: 11pt;
   }
   .report footer {
-    font-size: 7px;
+    font-size: 7pt;
     margin-top: 15px;
     padding-top: 12px;
   }

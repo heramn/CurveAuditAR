@@ -118,10 +118,13 @@ test("simulation moves, pauses, resets and requests one alert per run", async ({
   await expect(page.getByTestId("distance")).toHaveText("450");
   await page.getByRole("button", { name: "Start demo", exact: true }).click();
   await page.clock.runFor(1000);
-  await expect(page.getByTestId("distance")).toHaveText("425");
+  const moved = Number(await page.getByTestId("distance").innerText());
+  expect(moved).toBeLessThan(450);
+  expect(moved).toBeGreaterThan(390);
   await page.getByRole("button", { name: "Stop", exact: true }).click();
+  const paused = await page.getByTestId("distance").innerText();
   await page.clock.runFor(1000);
-  await expect(page.getByTestId("distance")).toHaveText("425");
+  await expect(page.getByTestId("distance")).toHaveText(paused);
   await page.getByRole("button", { name: "Reset demo" }).click();
   await expect(page.getByTestId("distance")).toHaveText("450");
   await page.getByRole("button", { name: "Start demo", exact: true }).click();

@@ -12,6 +12,7 @@ playwright-report/
 .vscode/
 *.tsbuildinfo
 public/release.json
+data/raw/*-reference.pdf
 
 .vercel
 .env*
